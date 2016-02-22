@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Route for GET requests
-app.get('/get-post-check',function(req,res){
+app.get('/',function(req,res){
   var qParams = []; //create empty array to store user input
   for (var p in req.query){
     qParams.push({'name':p,'value':req.query[p]}); //push all input into array as object pairs
@@ -23,7 +23,7 @@ app.get('/get-post-check',function(req,res){
 });
 
 //Route for POST requests
-app.post('/get-post-check', function(req,res){
+app.post('/', function(req,res){
     var bParams = []; //create empty array to store body input
     var qParams = []; //create empty array to store query/URL input
   for (var q in req.query){
