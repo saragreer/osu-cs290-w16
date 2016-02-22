@@ -1,0 +1,23 @@
+<h1>{{method}} Request Received</h1>
+
+{{#if queryData}}
+  <h2>Query data submitted</h2>
+  <ul>
+    {{#each queryData}}
+      <li>{{this.name}}: {{this.value}}
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No query data.</p>
+{{/if}}
+
+{{#if bodyData}}
+  <h2>Body data submitted</h2>
+  <ul>
+    {{#each bodyData}}
+      <li>{{this.name}}: {{this.value}}</li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No request body.</p>
+{{/if}}
