@@ -1,0 +1,72 @@
+<h2>APIs</h2>
+<p>There are in fact two APIs: <a href="#search">Search</a> and <a href="#getjobs">Get Jobs</a>. Search appends “apisearch” to the base URL, while Get Job appends “apigetjobs” to the base URL. Both require GET requests containing a variety of parameter options.</p>
+<br>
+<h2 id="search">Search API</h2>
+<p>Returns a list of job postings that meet any combination of search parameters.</p>
+<p>You can find a complete list of valid parameters in the XML Feed tab. This documentation will expand on the most important and a few interesting parameters. As stated in the XML Feed tab, the ordering of response fields is not guaranteed.</p>
+
+<h3>Parameters</h3>
+<p><strong>publisher</strong>: Publisher ID, required. This is Indeed’s version of an API key, which is assigned to you when you create an account. It is also used by Indeed to generate monthly reports showing information about your applications’ requests such as pageviews, sponsored clicks, and earnings. Use the same publisher ID for all applications; applications are distinguished by a unique channel parameter you can create in the XML Feed tab.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789 // This will produce an error because version omitted</pre>
+<br>
+<p><strong>v</strong>: Version, required. The current version is 2.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789&v=2</pre>
+<br>
+<p><strong>format</strong>: Output format. The options are xml and json. If omitted or invalid, XML is the default. If format=json, you can use a callback parameter to manipulate results.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789&v=2&format=json</pre>
+<br>
+<p><strong>q</strong>: Query. This is probably the most used parameter. You can use one or more queries in a response, separated by a space or comma. By default, terms are concatenated using the AND operator.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789&v=2&format=json&q=javascript</pre>
+<br>
+<p><strong>l</strong>: Location. You can use the following as values: postal code and any combination of city, state/province/region.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789&v=2&format=json&l=houston%2C+tx</pre>
+<br>
+<p><strong>fromage</strong>: This doesn’t mean cheese. It likely means “from age” as it takes a value that sets the number of days back to search.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789&v=2&format=json&fromage=15</pre>
+<br>
+<p><strong>highlight</strong>: Setting this value to 1, or true, will bold terms in the search results using html tags &lt;b&gt;&lt;/b&gt; that match those used by the query parameter. This feature could be targeted for enhancement using CSS and JavaScript.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789&v=2&format=json&highlight=1</pre>
+<br>
+<p><strong>latlong</strong>: Latitude and longitude coordinates. If latlong=1, it returns latitude and longitude information for each job result. The default value is 0. This feature could be used to plot jobs on a Google map, for instance.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apisearch?publisher=123456789&v=2&format=json&latlong=1</pre>
+<br>
+<p><strong>chnl</strong>: Channel. You can create unlimited channel names in the XML Feed tab to track separate applications using the same publisher ID.</p>
+<br>
+<p><strong>userip</strong>, <strong>useragent</strong>: These parameters are listed as required, but after testing by omitting them, the response status received is a <span class="text-success">200: OK</span> and no errors are output, so it seems these are really optional.</p>
+<br>
+<p><strong>psf</strong>: No idea what this stands for, but it appears when a query is sent from the <a href="http://www.indeed.com/advanced_search?" target="_blank">advanced search form</a> and has the value advsrch.</p>
+<pre>http://www.indeed.com/jobs?as_and=&as_phr=javascript+developer&l=Austin%2C+TX&fromage=any&psf=advsrch</pre>
+<br>
+<p><strong>as_and, as_phr, as_any, as_not, as_ttl, as_cmp, sr, salary</strong>: Advanced search parameters that filter results further.</p>
+<ul>
+    <li>as_and includes all words listed</li>
+    <li>as_phr includes an exact phrase</li>
+    <li>as_any includes at least one of the words listed</li>
+    <li>as_not excludes all words listed</li>
+    <li>as_ttl limits search to words only used in the title</li>
+    <li>as_cmp limits search to listings from a single company</li>
+    <li>sr=directhire excludes listings from staffing agencies</li>
+    <li>salary limits to listings that include a specific salary range</li>
+</ul>
+<h4>Example</h4>
+<pre>http://www.indeed.com/jobs?as_and=javascript&as_phr=remote&as_any=developer+engineer&as_not=ninja&sr=directhire&l=Austin%2C+TX&psf=advsrch</pre>
+<br>
+<h2 id="getjobs">Get Jobs API</h2>
+<p>Returns individual jobs using the jobkeys parameter.</p>
+<p>Publisher ID and version are still required. The output fields are the same as the Search API, but the response omits filtering parameters such as query and radius. The ordering of response fields is not guaranteed.</p>
+<h3>Parameters</h3>
+<p><strong>jobkeys</strong>: Job keys, required. You include this as a comma-separated list of job keys identifying specific job postings.</p>
+<h4>Example</h4>
+<pre>http://api.indeed.com/ads/apigetjobs?publisher=0123456789&jobkeys=5e50b56a7e69073c&v=2</pre>
+<br>
+<hr>
+<a href="/start" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> Getting Started</a>
+<a href="/errors" class="btn btn-default pull-right">Errors <span class="glyphicon glyphicon-chevron-right"></span></a>

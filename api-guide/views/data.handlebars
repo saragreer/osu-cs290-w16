@@ -1,0 +1,146 @@
+<h2>Response Data</h2>
+<p>Let's actually get some data.</p>
+
+<p>For the following examples, we'll use a simple search for JavaScript and Node.js jobs in the Austin, TX, area. Using an Express and Node.js environment, you might set up a route like this:</p>
+<h4>Example Request</h4>
+<pre>
+app.get('/testapi',function(req,res,next){
+    var context = {};
+    //make request to api
+    request("http://api.indeed.com/ads/apisearch?publisher=0123456789&q=javascript%2C+node&l=austin%2C+tx&v=2&format=json",
+    function(err, response, body){
+        //put returned data into context object
+        context = JSON.parse(body);
+        //render page and pass data to handlebars template
+        res.render('testapi', context);
+    });
+});
+</pre>
+<br>
+<p>Besides information relating directly to the parameters discussed earlier, such as query, radius, jobkey, and latitude and longitude, each response returns a JSON object or XML document that includes much more information.</p>
+<h4>JSON Output</h4>
+<pre>{
+  version: 2,
+  query: 'javascript',
+  location: 'austin, tx',
+  dupefilter: true,
+  highlight: true,
+  radius: 25,
+  start: 1,
+  end: 10,
+  totalResults: 1101,
+  pageNumber: 0,
+  results: 
+  [ 
+     { jobtitle: 'IBM StrongLoop / Node.js Developer Evangelist',
+       company: 'IBM',
+       city: 'Austin',
+       state: 'TX',
+       country: 'US',
+       formattedLocation: 'Austin, TX',
+       source: 'IBM',
+       date: 'Tue, 01 Mar 2016 05:09:25 GMT',
+       snippet: 'An ideal candidate is passionate about software development, <b>JavaScript</b>, and of course, Node.js. Develop and deliver presentations on <b>JavaScript</b>, Node.js, and...',
+       url: 'http://www.indeed.com/viewjob?jk=c6a2a3951ab325a9&qd=m71dvsbIH2et3Wct1KdewswSVrpqHVibeHtzJyvwocrowua9FZIZy6BIVyuVGa2r4OVYTFDDUxFmO4HBXRgi-aKNj6MzxAW8Ripa4jXOEz4kt0LCVy_rQinuMfW47e_m&indpubnum=7864044035955492&atk=1ad523dsaa55091t',
+       onmousedown: 'indeed_clk(this, \'6966\');',
+       jobkey: 'c6a2a3951ab325a9',
+       sponsored: false,
+       expired: false,
+       indeedApply: false,
+       formattedLocationFull: 'Austin, TX',
+       formattedRelativeTime: '4 days ago',
+       noUniqueUrl: false
+    }
+  ]
+}</pre>
+<br>
+<p>In the above JSON output excerpt, you’ll notice some additional, potentially useful key-value pairs. Let's dig into some of the more interesting data:</p>
+<h3>totalResults</h3>
+<p>This value holds the total number of search results, regardless of how many results were returned in the JSON object. The totalResults value, along with the start and end data, can be used to determine how many pages of data to display.</p>
+<h4>Example</h4>
+<pre>
+//Node.js
+context.totalPages = Math.ceil(context.totalResults/(context.end - context.start + 1));
+
+//Handlebars.js
+&lt;p&gt;Total results: &#123;&#123;totalResults&#125;&#125;&lt;/p&gt;
+&lt;p&gt;Total pages: &#123;&#123;totalPages&#125;&#125;&lt;/p&gt;</pre>
+<h4>Output</h4>
+<samp>
+Total results: 1101<br>
+Total pages: 111
+</samp>
+<br>
+<h3>snippet</h3>
+<p>Provides an excerpt from the first 150-175 characters of the job description.</p>
+<h4>Example</h4>
+<pre>
+//Node.js
+context.exampleSnippet = context.results[0].snippet;
+
+//Handlebars.js
+&lt;p&gt;Snippet: &#123;&#123;&#123;exampleSnippet&#125;&#125;&#125;&lt;/p&gt;
+</pre>
+<h4>Output</h4>
+<samp>
+Snippet: An ideal candidate is passionate about software development, <b>JavaScript</b>, and of course, Node.js. Develop and deliver presentations on <b>JavaScript</b>, Node.js, and...
+</samp>
+<h3>url</h3>
+<p>Returns link to full job description online.</p>
+<h4>Example</h4>
+<pre>
+//Node.js
+context.exampleUrl = context.results[1].url;
+
+//Handlebars.js
+&lt;p&gt;&#123;&#123;exampleUrl&#125;&#125;&lt;/p&gt;
+</pre>
+<h4>Output</h4>
+<p>http://www.indeed.com/viewjob?jk=fac215cbc76f537c&qd=m71dvsbIH2et3Wct1KdewswSVrpqHVibeHtzJyvwocrowua9FZIZy6BIVyuVGa2r4OVYTFDDUxFmO4HBXRgi-WP-8CAOFLJvQvEzRc51x5okt0LCVy_rQinuMfW47e_m&indpubnum=0000000000000000&atk=1ad5431ipava7es8</p>
+<h3>sponsored</h3>
+<p>If true, Indeed will style the job posting so it is more visible and stands out above other job postings (example styling below not exact).</p>
+<pre>
+//Node.js
+context.isSponsored = context.results[1].sponsored;
+
+//Handlebars.js
+&lt;div class="sponsored"&gt;
+  &#123;&#123;#if isSponsored&#125;&#125;
+    &lt;p&gt;Javascript and Node.js Developer &lt;span class="label label-success"&gt;Sponsored&lt;/span&gt;&lt;/p&gt;
+  &#123;&#123;/if&#125;&#125;
+&lt;p&gt;/div&gt;
+</pre>
+<h4>Output</h4>
+<samp><p>Javascript and Node.js Developer <span class="label label-success">Sponsored</span></p></samp>
+<h3>expired</h3>
+<p>If true, this means the company posting the job is no longer taking applications.</p>
+<pre>
+//Node.js
+context.isExpired = context.results[1].expired;
+
+//Handlebars.js
+&#123;&#123;#if isExpired&#125;&#125;
+   &lt;p&gt;Javascript and Node.js Developer &lt;span class="label label-danger"&gt;Expired&lt;/span&gt;&lt;/p&gt;
+&#123;&#123;/if&#125;&#125;
+</pre>
+<h4>Output</h4>
+<samp><p>Javascript and Node.js Developer <span class="label label-danger">Expired</span></p></samp>
+<h3>indeedApply</h3>
+<p>Indicates whether the job posting allows the user to apply using their Indeed account and resume directly.</p>
+<pre>
+//Node.js
+context.indeedApply = context.results[1].indeedApply;
+
+//Handlebars.js
+&#123;&#123;#if indeedApply&#125;&#125;
+   &lt;p&gt;Javascript and Node.js Developer &lt;span class="label label-warning"&gt;Apply&lt;/span&gt;&lt;/p&gt;
+&#123;&#123;/if&#125;&#125;
+</pre>
+<h4>Output</h4>
+<samp><p>Javascript and Node.js Developer <span class="label label-warning">Apply</span></p></samp>
+<br>
+<h2>Summary</h2>
+<p>Indeed's API is somewhat simple and not explained very well on its website, but can be leveraged to access a huge amount of information related to employment opportunities. I've tried to expand on what's possible in this unoffical set of documentation, and hope I've shed some light on what you can do with it.</p>
+<hr>
+<a href="/errors" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> Errors</a>
+<a href="/credits" class="btn btn-default pull-right">Credits <span class="glyphicon glyphicon-chevron-right"></span></a>

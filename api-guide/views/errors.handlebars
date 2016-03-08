@@ -1,0 +1,38 @@
+<h2>Errors</h2>
+<h3>Publisher ID errors</h3>
+<p>Output when the publisher ID is omitted or invalid.</p>
+<pre>
+{
+"error": "You attempted an API search without specifying a publisher number"
+},
+{
+"error": "You attempted an API search with invalid publisher number: 012345677q=javascript, node"
+}
+</pre>
+<h3>Version errors</h3>
+<p>Output when the version parameter is omitted or invalid.</p>
+<pre>
+{
+"error": "The value "1" is not allowed for API version parameter "v""
+},
+{
+"error": "Missing API version parameter "v""
+}
+</pre>
+<h3>Method errors</h3>
+<p>Output when HTTP requests other than GET are attempted.</p>
+<pre>Status: 405: Method Not Allowed
+A request was made of a resource using a request method not supported by that resource; for example, using GET on a form which requires data to be presented via POST, or using PUT on a read-only resource.
+Response header - Allow: GET</pre>
+<br>
+<p data-height="268" data-theme-id="0" data-slug-hash="graZLO" data-default-tab="result" data-user="saragreer" class="codepen">See the Pen <a href="http://codepen.io/saragreer/pen/graZLO/">method-error</a> by Sara Greer (<a href="http://codepen.io/saragreer">@saragreer</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+<br>
+<h3>Unintended query results</h3>
+<p>Some parts of the query string should be encoded using encodeURIComponent if collected from a freeform text input. From <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank">Mozilla Developer Network</a>:</p>
+
+<blockquote>To avoid unexpected requests to the server, you should call encodeURIComponent on any user-entered parameters that will be passed as part of a URI. For example, a user could type "Thyme &time=again" for a variable comment. Not using encodeURIComponent on this variable will give comment=Thyme%20&time=again. Note that the ampersand and the equal sign mark a new key and value pair. So instead of having a POST comment key equal to "Thyme &time=again", you have two POST keys, one equal to "Thyme " and another (time) equal toagain.</blockquote>
+
+<hr>
+<a href="/apis" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> APIs</a>
+<a href="/data" class="btn btn-default pull-right">Response Data <span class="glyphicon glyphicon-chevron-right"></span></a>

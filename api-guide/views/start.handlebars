@@ -1,0 +1,113 @@
+<h2>Getting Started</h2>
+<p>The following is documentation for the implementation and use of the official Indeed API. You must have a unique API key to use the Indeed API.</p>
+<br>
+<h2>Get an API Key</h2>
+<p>To obtain an API key, or what Indeed calls a publisher ID, you must visit <a href="http://www.indeed.com/publisher" target="_blank">www.indeed.com/publisher</a> and create an account. This will automatically generate a unique identifier you will include in every call to the Indeed API.</p>
+<img class="img-responsive img-thumbnail center-block" src="/images/indeed-xmlfeed.png" alt="Indeed Publisher XML Feed tab" title="Indeed Publisher XML Feed tab">
+<p>Once logged in, navigate to the “XML Feed” tab and scroll down to the heading titled “Sample Request.” Your 16-digit publisher ID will be listed in the first table row. (The XML Feed tab is where the official API documentation can be found and will be referenced often in this guide.)</p>
+<br>
+<h2>The Basics</h2>
+<p>Every call to the Indeed API consists of the following:</p>
+<ul>
+    <li>The base URL is http://api.indeed.com/ads.</li>
+    <li>A publisher ID, passed as the parameter <strong>publisher</strong> (<strong>publisher=1234</strong>).</li>
+    <li>A version number, passed as the parameter <strong>v</strong>. The current version is 2 (<strong>v=2</strong>).</li>
+    <li>An optional response format, passed as the parameter <strong>format</strong>. The options are <strong>xml</strong> and <strong>json</strong>. If omitted or invalid, the default is XML (<strong>format=json</strong>).</li>
+    <li>All requests must be GET requests.</li>
+</ul>
+<br>
+<h2>Response Formats</h2>
+<p>There are two valid response formats: XML and JSON. The default format is XML.</p>
+<h3>XML</h3>
+<h4>Example</h4>
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;response version="2"&gt;
+&lt;query&gt;javascript, node&lt;/query&gt;
+&lt;location&gt;austin, tx&lt;/location&gt;
+&lt;dupefilter&gt;true&lt;/dupefilter&gt;
+&lt;highlight&gt;false&lt;/highlight&gt;
+&lt;totalresults&gt;1188&lt;/totalresults&gt;
+&lt;start&gt;1&lt;/start&gt;
+&lt;end&gt;10&lt;/end&gt;
+&lt;radius&gt;25&lt;/radius&gt;
+&lt;clickedCategories&gt;&lt;/clickedCategories&gt;
+&lt;pageNumber&gt;0&lt;/pageNumber&gt;
+&lt;results&gt;
+        &lt;result&gt;
+            &lt;jobtitle&gt;Google for Work, Software Engineer&lt;/jobtitle&gt;
+            &lt;company&gt;Google&lt;/company&gt;
+            &lt;city&gt;Austin&lt;/city&gt;
+            &lt;state&gt;TX&lt;/state&gt;
+            &lt;country&gt;US&lt;/country&gt;
+            &lt;formattedLocation&gt;Austin, TX&lt;/formattedLocation&gt;
+            &lt;source&gt;Google&lt;/source&gt;
+            &lt;date&gt;Sat, 05 Mar 2016 00:54:36 GMT&lt;/date&gt;
+            &lt;snippet&gt;UI development experience with HTML, JavaScript, AJAX and similar technologies. Google&#039;s software engineers develop the next-generation technologies that change...&lt;/snippet&gt;
+            &lt;url&gt;http://www.indeed.com/viewjob?jk=8fcbd74ddf25d1c1&amp;qd=m71dvsbIH2et3Wct1KdewswSVrpqHVibeHtzJyvwocphVfWrq_le1nzCzWBQbSje3OSKOirO8kGMOQQfja36cYr6xVPEYJM3ohtIWDDGROzoAtrfcmgZ_w38QHRyk8RH&amp;indpubnum=0000000000000000&amp;atk=1ad278jldafq5b9p&lt;/url&gt;
+            &lt;onmousedown&gt;indeed_clk(this, &#039;6315&#039;);&lt;/onmousedown&gt;
+            &lt;latitude&gt;30.266483&lt;/latitude&gt;
+            &lt;longitude&gt;-97.74176&lt;/longitude&gt;
+            &lt;jobkey&gt;8fcbd74ddf25d1c1&lt;/jobkey&gt;
+            &lt;sponsored&gt;false&lt;/sponsored&gt;
+            &lt;expired&gt;false&lt;/expired&gt;
+            &lt;indeedApply&gt;false&lt;/indeedApply&gt;
+            &lt;formattedLocationFull&gt;Austin, TX&lt;/formattedLocationFull&gt;
+            &lt;formattedRelativeTime&gt;51 minutes ago&lt;/formattedRelativeTime&gt;
+            &lt;noUniqueUrl&gt;false&lt;/noUniqueUrl&gt;
+        &lt;/result&gt;
+&lt;/results&gt;
+&lt;/response&gt;
+</pre>
+<br>
+<h3>JSON</h3>
+<h4>Example</h4>
+<pre>
+{
+   "version" : 2,
+   "query" : "javascript, node",
+   "location" : "austin, tx",
+   "dupefilter" : true,
+   "highlight" : true,
+   "radius" : 25,
+   "start" : 1,
+   "end" : 10,
+   "totalResults" : 1189,
+   "pageNumber" : 0,
+   "results" : [
+               {
+                   "jobtitle" : "Full Stack Developer (Best Job You Ever Had)",
+                   "company" : "Modern Business Solutions",
+                   "city" : "Austin",
+                   "state" : "TX",
+                   "country" : "US",
+                   "formattedLocation" : "Austin, TX",
+                   "source" : "Indeed",
+                   "date" : "Tue, 01 Mar 2016 02:36:59 GMT",
+                   "snippet" : "We are a small team of smart and ambitious people with positive attitudes that have created a successful environment for both our clients and employees. Our",
+                   "url" : "http://www.indeed.com/viewjob?jk=2344d9f076c7ac1d&qd=m71dvsbIH2et3Wct1KdewswSVrpqHVibeHtzJyvwocphVfWrq_le1nzCzWBQbSje3OSKOirO8kGMOQQfja36cW4M1DgYffO9-YV6fhyxBzyQZKtyT-rKFdjok8sOUDbL&indpubnum=0000000000000000&atk=1ad27f4lnafq5e2r",
+                   "onmousedown" : "indeed_clk(this, '338');",
+                   "latitude" : 30.32967,
+                   "longitude" : -97.6978,
+                   "jobkey" : "2344d9f076c7ac1d",
+                   "sponsored" : false,
+                   "expired" : false,
+                   "indeedApply" : true,
+                   "formattedLocationFull" : "Austin, TX 78752",
+                   "formattedRelativeTime" : "3 days ago",
+                   "noUniqueUrl" : true               
+}
+]
+}
+</pre>
+<br>
+<h2>Rules</h2>
+<h3>Attribution</h3>
+<p>Include the code snippet available at the top of the XML Feed tab whenever you display Indeed’s job search results.</p>
+
+<h3>Click Tracking</h3>
+<p>Include the code snippet available at the top of the XML Feed tab that references a JavaScript file for click tracking support. If your website in encrypted, there is an https snippet available.</p>
+
+<hr>
+<a href="http://localhost:8888" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> Introduction</a>
+<a href="/apis" class="btn btn-default pull-right">APIs <span class="glyphicon glyphicon-chevron-right"></span></a>

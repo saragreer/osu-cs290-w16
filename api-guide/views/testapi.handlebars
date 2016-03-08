@@ -1,0 +1,13 @@
+<h2>Indeed API test</h2>
+<h3>Javascript Developer Job Openings</h3>
+<p>Total results: {{totalResults}}</p>
+<p>Total pages: {{totalPages}}</p>
+<p>Snippet length: {{snippetLength}}</p>
+<p>Snippet: {{exampleSnippet}}</p>
+<p>Url: {{exampleUrl}}</p>
+<ul>
+{{#each results}}
+    <li><strong>{{{jobtitle}}}:</strong> {{{snippet}}}
+  </li>
+{{/each}}
+</ul>
