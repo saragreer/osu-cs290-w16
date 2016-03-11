@@ -1,0 +1,21 @@
+{
+  "name": "indeed.js",
+  "version": "1.0.0",
+  "description": "Indeed API calls",
+  "main": "indeed.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sara Greer",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "bootstrap": "^3.3.6",
+    "express": "^4.13.2",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.11.3",
+    "jquery": "^2.2.1",
+    "mysql": "^2.8.0",
+    "request": "^2.69.0"
+  }
+}
