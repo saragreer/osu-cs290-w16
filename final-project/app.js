@@ -32,11 +32,13 @@ app.get('/', function(req,res,next){
                 //send result back to client with message
                 res.type("text/plain");
                 res.send("The SQL SELECT query failed.");
+                res.end();
             }
             
             //Send the result back to the client
             res.type("text/plain");
             res.send(rows);
+            res.end();
         });
     }
     res.render('home', context);
@@ -50,6 +52,7 @@ app.get('/insert',function(req,res,next){
       return;
     }
     context.results = "Inserted id " + result.insertId;
+    console.log(results);
     res.render('home',context);
   }
 });
