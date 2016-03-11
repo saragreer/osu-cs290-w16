@@ -3,6 +3,7 @@ var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 var bodyParser = require('body-parser');
 var request = require('request');
+var session = require('express-session');
 var mysql = require('mysql');
 var pool = mysql.createPool({
     host    :   'localhost',
@@ -22,7 +23,9 @@ app.use(session({secret: 'SuperSecretPassword', resave: true, saveUninitialized:
 app.use(express.static('public'));
 
 app.get('/', function(req,res,next){
-    res.render('home');
+    var context = {};
+    context.hello = "Hello world";
+    res.render('home', context);
 });
 
 app.get('/reset-table',function(req,res,next){
@@ -40,6 +43,24 @@ app.get('/reset-table',function(req,res,next){
       res.render('home',context);
     })
   });
+});
+
+app.post('/', function(req,res){
+    //if the body reads something then call select and send back plain text
+    if(req.body['something']) {
+        pool.query('SELECT * FROM workouts', function(err,rows,fields){
+           //handle errors
+            if(err) {
+                //send result back to client with message
+                res.type("text/plain");
+                res.send("The SQL SELECT query failed.");
+            }
+            
+            //Send the result back to the client
+            res.type("text/plain");
+            res.send(rows);
+        });
+    }
 });
 
 app.use(function(req,res){
