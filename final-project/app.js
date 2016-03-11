@@ -25,7 +25,7 @@ app.use(express.static('public'));
 app.get('/', function(req,res,next){
     var context = {};
     context.hello = "Hello world";
-    pool.query(INSERT INTO workouts(name,reps,weight,date,lbs) VALUES ('test',5,10,"2016-1-1",1));
+    pool.query('INSERT INTO workouts(name,reps,weight,date,lbs) VALUES ('test',5,10,"2016-1-1",1)');
     res.render('home', context);
 });
 
