@@ -25,8 +25,20 @@ app.use(express.static('public'));
 app.get('/', function(req,res,next){
     var context = {};
     context.hello = "Hello world";
-    pool.query('INSERT INTO workouts(name,reps,weight,date,lbs) VALUES ("test",5,10,"2016-1-1",1)');
     res.render('home', context);
+});
+
+app.get('/insert',function(req,res,next){
+  var context = {};
+  mysql.pool.query('INSERT INTO workouts(name,reps,weight,date,lbs) VALUES ("test",5,10,"2016-1-1",1))', function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    context.results = "Inserted id " + result.insertId;
+    console.log(results);
+    res.render('home',context);
+  });
 });
 
 app.get('/reset-table',function(req,res,next){
