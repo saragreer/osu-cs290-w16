@@ -30,7 +30,7 @@ app.get('/', function(req,res,next){
 
 app.get('/insert',function(req,res,next){
   var context = {};
-  pool.query('INSERT INTO workouts(name,reps,weight,date,lbs) VALUES ("test",5,10,"2016-1-1",1);'), function(err, result){
+  pool.query('INSERT INTO workouts(name,reps,weight,date,lbs) VALUES ("test",5,10,"2016-1-1",1)'), function(err, result){
     if(err){
       next(err);
       return;
@@ -38,7 +38,7 @@ app.get('/insert',function(req,res,next){
     context.results = "Inserted id " + result.insertId;
     console.log(results);
     res.render('home',context);
-  });
+  }
 });
 
 app.get('/reset-table',function(req,res,next){
