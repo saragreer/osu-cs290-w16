@@ -1,3 +1,0 @@
-This is a new file created from a different computer (amazon ec2).
-
-This is a new line added from the first computer (home) to a branch called testbranch.
