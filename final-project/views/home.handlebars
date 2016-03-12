@@ -1,3 +1,36 @@
-<h1>{{hello}}</h1>
-<p>{{results}}</p>
-
+<h2>Workout Tracker</h2>
+<form action="/insert" method="post" id="workout-form">
+    <p>Workout name: <input type="text" name="name" id="name"></p>
+    {{#if message}}<p>{{message}}</p>{{/if}}
+    <p>Reps: <input type="number" name="reps" id="reps"></p>
+    <p>Weight: <input type="number" name="weight" id="weight"></p>
+    <p>Date: <input type="date" name="date" id="date"></p>
+    <p>Measurement: <input type="radio" name="measurement" id="lbs" value="1"> Pounds</input> <input type="radio" name="measurement" id="kg" value="0"> Kilograms</input></p>
+    <p><input type="submit" id="workout-submit" name="Add Workout" value="Log Exercise"></p>
+    <input type="hidden" name="id" id="id">
+</form>
+{{#if results}}
+<h3>Completed Workouts</h3>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Reps</th>
+                <th>Weight</th>
+                <th>Date</th>
+                <th>Measurement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each results}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{reps}}</td>
+                <td>{{weight}}</td>
+                <td>{{date}}</td>
+                <td>{{lbs}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{/if}}

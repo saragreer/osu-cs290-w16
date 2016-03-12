@@ -22,44 +22,33 @@ app.use(bodyParser.json());
 app.use(session({secret: 'SuperSecretPassword', resave: true, saveUninitialized: false}));
 app.use(express.static('public'));
 
-app.get('/', function(req,res,next){
-    var context = {};
-    context.hello = "Hello world";
-    if(req.body) {
-        pool.query('SELECT * FROM workouts', function(err,rows,fields){
-           //handle errors
-            if(err) {
-                //send result back to client with message
-                res.type("text/plain");
-                res.send("The SQL SELECT query failed.");
-                res.end();
-            }
-            
-            //Send the result back to the client
-            res.type("text/plain");
-            res.send(rows);
-            res.end();
-        });
-    }
-    res.render('home', context);
-});
-
-app.get('/insert',function(req,res,next){
+app.get('/',function(req,res,next){
   var context = {};
-  pool.query('INSERT INTO workouts(name,reps,weight,date,lbs) VALUES ("test",5,10,"2016-1-1",1)'), function(err, result){
+  
+  pool.query('SELECT * FROM workouts', function(err, rows, fields){
     if(err){
       next(err);
       return;
     }
-    context.results = "Inserted id " + result.insertId;
-    console.log(results);
-    res.render('home',context);
-  }
+    context.results = rows;
+    res.render('home', context);
+  });
+  
+});
+
+app.post('/insert',function(req,res,next){
+  pool.query("INSERT INTO workouts (`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?,?,?,?,?)", [req.body.name, req.body.reps, req.body.weight, req.body.date, req.body.lbs], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+  res.redirect('/');
+  });
 });
 
 app.get('/reset-table',function(req,res,next){
   var context = {};
-  pool.query("DROP TABLE IF EXISTS workouts", function(err){ //replace your connection pool with the your variable containing the connection pool
+  pool.query("DROP TABLE IF EXISTS workouts", function(err){
     var createString = "CREATE TABLE workouts("+
     "id INT PRIMARY KEY AUTO_INCREMENT,"+
     "name VARCHAR(255) NOT NULL,"+
@@ -68,29 +57,10 @@ app.get('/reset-table',function(req,res,next){
     "date DATE,"+
     "lbs BOOLEAN)";
     pool.query(createString, function(err){
-      context.results = "Table reset";
-      res.render('home',context);
+      res.render('home', context);
     })
   });
 });
-
-/**app.post('/', function(req,res){
-    //if the body reads something then call select and send back plain text
-    if(req.body['something']) {
-        pool.query('SELECT * FROM workouts', function(err,rows,fields){
-           //handle errors
-            if(err) {
-                //send result back to client with message
-                res.type("text/plain");
-                res.send("The SQL SELECT query failed.");
-            }
-            
-            //Send the result back to the client
-            res.type("text/plain");
-            res.send(rows);
-        });
-    }
-});**/
 
 app.use(function(req,res){
   res.status(404);
