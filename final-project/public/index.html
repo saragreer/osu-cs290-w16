@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Week 10 Assignment</title>
+    <title>Workout Tracker</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <!-- Custom CSS -->
@@ -22,21 +22,18 @@
     <body>
         <div class="container">
             <div class="row">
-                
                 <h2>Workout Tracker</h2>
-                <form action="workout.js" method="get">
-                    <p>Exercise name: <input type="text" name="name" id="name"></p>
-                    <p>Reps: <input type="number" name="reps" id="reps"></p>
-                    <p>Weight: <input type="number" name="weight" id="weight"></p>
-                    <p>Date: <input type="date" name="date" id="date"></p>
-                    <p>Measurement: <input type="radio" name="measurement" id="lbs" value="1"> Pounds</input> <input type="radio" name="measurement" id="kg" value="0"> Kilograms</input></p>
-                    <p><input type="submit" id="workout-submit" value="Log Exercise"></p>
-                    <input type="hidden" name="id" id="id">
+                <h3>Add a workout</h3>
+                <form id="workout-form">
+                    <p>Name: <input type="text" id="name"></p>
+                    <p>Reps: <input type="number" id="reps"></p>
+                    <p>Weight: <input type="number" id="weight"></p>
+                    <p>Date: <input type="date" id="date"></p>
+                    <p>Lbs (Enter 1) or Kg (Enter 0): <input type="number" id="lbs"></p>
+                    <input class="btn btn-success" type="submit" id="add-new" value="Log Workout">
                 </form>
-                
-                <h3>Completed Exercises</h3>
-                <div id="workout-table"></div>
-    
+                <br>
+                <div id="table"></div>
             </div>
         </div>
         
@@ -44,17 +41,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <script>
-            var workoutTable = document.createElement("table"),
-                headRow = document.createElement("tr");
-            ["Name", "Reps", "Weight", "Date", "Measurement"].forEach(function(col){
-                var headCell = document.createElement("th");
-                headCell.textContent = col;
-                headRow.appendChild(headCell);
-            });
-            workoutTable.appendChild(headRow);
-            document.getElementById("workout-table").appendChild(workoutTable);
-        </script>
-        <script src="js/workout.js"></script>
+        <!-- Application script -->
+        <script src="js/workouts.js"></script>
     </body>
 </html>
